@@ -1,20 +1,26 @@
 <?php
 
+use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DesainInteriorController;
 use App\Http\Controllers\OngoingProjectController;
+use App\Http\Controllers\OwnerProfileController;
 use App\Http\Controllers\ProjectDoneController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\TestimonyController;
+use App\Http\Controllers\VisiMisiController;
+use App\Models\benefit;
 use App\Models\desainInterior;
 use App\Models\Faq;
 use App\Models\InstagramPost;
 use App\Models\ongoingProjects;
+use App\Models\ownerProfile;
 use App\Models\projectDone;
 use App\Models\service;
 use App\Models\statistic;
 use App\Models\testimony;
+use App\Models\visionMission;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AdminController;
@@ -34,6 +40,9 @@ Route::get('/dashboard', function () {
     $OPs = ongoingProjects::latest()->get();
     $DIs = desainInterior::latest()->get();
     $statis = statistic::all();
+    $owp = ownerProfile::all();
+    $VM = visionMission::all();
+    $bnfts = benefit::all();
     
     return view('dashboard', [
         'posts' => $posts,
@@ -43,7 +52,10 @@ Route::get('/dashboard', function () {
         'PDs' => $PDs,
         'OPs' => $OPs,
         'DIs' => $DIs,
-        'statis' => $statis
+        'statis' => $statis,
+        'owp' => $owp,
+        'VM' => $VM,
+        'bnfts' => $bnfts
     ]);
 });
 
@@ -105,3 +117,21 @@ Route::post('/create-contact', [ContactController::class, 'createContact']);
 Route::get('/edit-contact/{cont}', [ContactController::class, 'showEditScreen']);
 Route::put('/edit-contact/{cont}', [ContactController::class, 'updateContact']);
 Route::delete('/delete-contact/{cont}', [ContactController::class, 'deleteContact']);
+
+// Owner Profile
+Route::post('/create-owner-profile', [OwnerProfileController::class, 'createOwp']);
+Route::get('/edit-owner-profile/{owp}', [OwnerProfileController::class, 'showEditScreen']);
+Route::put('/edit-owner-profile/{owp}', [OwnerProfileController::class, 'updateOwp']);
+Route::delete('/delete-owner-profile/{owp}', [OwnerProfileController::class, 'deleteOwp']);
+
+// Visi Misi
+Route::post('/create-visi-misi', [VisiMisiController::class, 'createVisiMisi']);
+Route::get('/edit-visi-misi/{VM}', [VisiMisiController::class, 'showEditScreen']);
+Route::put('/edit-visi-misi/{VM}', [VisiMisiController::class, 'updateVisiMisi']);
+Route::delete('/delete-visi-misi/{VM}', [VisiMisiController::class, 'deleteVisiMisi']);
+
+// Keunggulan
+Route::post('/create-keunggulan', [BenefitController::class, 'createBenefit']);
+Route::get('/edit-keunggulan/{bnft}', [BenefitController::class, 'showEditScreen']);
+Route::put('/edit-keunggulan/{bnft}', [BenefitController::class, 'updateBenefit']);
+Route::delete('/delete-keunggulan/{bnft}', [BenefitController::class, 'deleteBenefit']);

@@ -8,16 +8,20 @@ use Illuminate\Http\Request;
 class FaqController extends Controller
 {
     public function createFAQ(Request $request){
-        $incomingFields = $request->validate([
-            'question' => 'required',
-            'answer' => 'required'
-        ]);
+        if (auth()->check()){   
+            $incomingFields = $request->validate([
+                'question' => 'required',
+                'answer' => 'required'
+            ]);
 
-        $incomingFields['question'] = strip_tags($incomingFields['question']);
-        $incomingFields['answer'] = filter_var($incomingFields['answer']);
-        $incomingFields['user_id'] = auth()->id();
-        Faq::create($incomingFields);
-        return Redirect("/dashboard");
+            $incomingFields['question'] = strip_tags($incomingFields['question']);
+            $incomingFields['answer'] = filter_var($incomingFields['answer']);
+            $incomingFields['user_id'] = auth()->id();
+            Faq::create($incomingFields);
+            return Redirect("/dashboard");
+        }
+        
+        return redirect('/');
     }
 
     public function showEditScreen(Faq $faq){
@@ -47,7 +51,7 @@ class FaqController extends Controller
     }
 
     public function deleteFAQ(Faq $faq){
-       if (auth()->user()->id() == $faq['user_id']){
+       if (auth()->id() == $faq['user_id']){
             $faq->delete();
 
             return redirect('/dashboard');

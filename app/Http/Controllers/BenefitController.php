@@ -2,60 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\service;
+use App\Models\benefit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ServiceController extends Controller
+class BenefitController extends Controller
 {
-    public function createService(Request $request){
+    public function createBenefit(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
-                'name' => 'required',
+                'title' => 'required',
                 'desc' => 'required',
                 'image' => 'required'
             ]);
 
             if($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('services', 'public');
+                $imagePath = $request->file('image')->store('benefits', 'public');
                 $incomingFields['image'] = $imagePath;
             }
 
-            $incomingFields['name'] = strip_tags($incomingFields['name']);
+            $incomingFields['title'] = strip_tags($incomingFields['title']);
             $incomingFields['desc'] = strip_tags($incomingFields['desc']);
             $incomingFields['user_id'] = auth()->id();
-            service::create($incomingFields);
+            benefit::create($incomingFields);
             return Redirect("/dashboard");
         }
         
         return redirect('/');
     }
 
-    public function showEditScreen(service $srvc){
-        if (auth()->id() !== $srvc['user_id']){
+    public function showEditScreen(benefit $bnft){
+        if (auth()->id() !== $bnft['user_id']){
             return redirect('/');
         }
         
-        return view('edit-service', ['srvc' => $srvc]);
+        return view('edit-benefit', ['bnft' => $bnft]);
     }
 
-    public function updateService(service $srvc, Request $request){
-        if (auth()->id() == $srvc['user_id']){
+    public function updateBenefit(benefit $bnft, Request $request){
+        if (auth()->id() == $bnft['user_id']){
             $incomingFields = $request->validate([
-                'name' => 'required',
+                'title' => 'required',
                 'desc' => 'required'
             ]);
 
             if($request->hasFile('image')) {
-                Storage::disk('public')->delete($srvc->image);
-                $imagePath = $request->file('image')->store('services', 'public');
+                Storage::disk('public')->delete($bnft->image);
+                $imagePath = $request->file('image')->store('benefits', 'public');
                 $incomingFields['image'] = $imagePath;
             }
 
-            $incomingFields['name'] = strip_tags($incomingFields['name']);
+            $incomingFields['title'] = strip_tags($incomingFields['title']);
             $incomingFields['desc'] = strip_tags($incomingFields['desc']);
 
-            $srvc->update($incomingFields);
+            $bnft->update($incomingFields);
             
             return redirect('/dashboard');
         }
@@ -63,10 +63,10 @@ class ServiceController extends Controller
         return redirect('/');
     }
 
-    public function deleteService(service $srvc){
-        if (auth()->id() == $srvc['user_id']){
-            $srvc->delete();
-            Storage::disk('public')->delete($srvc->image);
+    public function deleteBenefit(benefit $bnft){
+        if (auth()->id() == $bnft['user_id']){
+            $bnft->delete();
+            Storage::disk('public')->delete($bnft->image);
         }
         
         return redirect('/dashboard');

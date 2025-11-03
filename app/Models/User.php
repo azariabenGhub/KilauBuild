@@ -81,4 +81,12 @@ class User extends Authenticatable
     public function adminContact() {
         $this->hasMany(contact::class, 'user_id');
     }
+
+    public function adminOws() {
+        $this->hasMany(ownerProfile::class, 'user_id');
+    }
+
+    public function adminVisiMisi() {
+        $this->hasMany(visionMission::class, 'user_id');
+    }
 }

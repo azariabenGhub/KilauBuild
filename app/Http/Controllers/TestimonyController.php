@@ -8,18 +8,22 @@ use Illuminate\Http\Request;
 class TestimonyController extends Controller
 {
     public function createTstmn(Request $request){
-        $incomingFields = $request->validate([
-            'name' => 'required',
-            'review' => 'required',
-            'star' => 'required',
-        ]);
+        if (auth()->check()){   
+            $incomingFields = $request->validate([
+                'name' => 'required',
+                'review' => 'required',
+                'star' => 'required',
+            ]);
 
-        $incomingFields['name'] = strip_tags($incomingFields['name']);
-        $incomingFields['review'] = strip_tags($incomingFields['review']);
-        $incomingFields['star'] = strip_tags($incomingFields['star']);
-        $incomingFields['user_id'] = auth()->id();
-        testimony::create($incomingFields);
-        return Redirect("/dashboard");
+            $incomingFields['name'] = strip_tags($incomingFields['name']);
+            $incomingFields['review'] = strip_tags($incomingFields['review']);
+            $incomingFields['star'] = strip_tags($incomingFields['star']);
+            $incomingFields['user_id'] = auth()->id();
+            testimony::create($incomingFields);
+            return Redirect("/dashboard");
+        }
+
+        return redirect('/');
     }
 
     public function showEditScreen(testimony $tstmn){

@@ -117,6 +117,40 @@
             <button>Create Contact</button>
         </form>
     </div>
+
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Create Owner Profile</h2>
+        <form action="/create-owner-profile" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input name="name" type="text" placeholder="Nama Owner...">
+            <textarea name="desc" type="text" placeholder="Deskripsi..."></textarea>
+            <input name="url_instagram" type="text" placeholder="Link Instagram...">
+            <input name="url_linkedin" type="text" placeholder="Link Linkedin...">
+            <input type="file" name="image">
+            <button>Create Owner Profile</button>
+        </form>
+    </div>
+
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Create Visi Misi</h2>
+        <form action="/create-visi-misi" method="POST" enctype="multipart/form-data">
+            @csrf
+            <textarea name="visi" type="text" placeholder="Visi..."></textarea>
+            <textarea name="misi" type="text" placeholder="Misi..."></textarea>
+            <button>Create Visi Misi</button>
+        </form>
+    </div>
+
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Create Keunggulan</h2>
+        <form action="/create-keunggulan" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input name="title" type="text" placeholder="Judul Keunggulan...">
+            <textarea name="desc" type="text" placeholder="Deskripsi..."></textarea>
+            <input name="image" type="file" placeholder="Gambar..">
+            <button>Create Keunggulan</button>
+        </form>
+    </div>
     
     @if(isset($posts) && $posts->count() > 0)
     <div style="border: 3px solid black; margin-bottom: 10px;">
@@ -309,6 +343,75 @@
     </div>
     @endif
     
+    @if(isset($owp) && $owp->count() > 0)
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Owner Profile</h2>
+        <div style="background-color: gray; padding: 10px; margin: 10px;">
+            <h3>{{$owp->first()->name}}</h3>
+            {{$owp->first()->desc}}
+            {{$owp->first()->url_instagram}}
+            {{$owp->first()->url_linkedin}}
+            <img src="{{ asset('storage/' . $owp->first()->image) }}" alt="{{$owp->first()->name}}" style="max-width: 200px;">
+        </div>
+        <p><a href="/edit-owner-profile/{{$owp->first()->id}}">Edit</a></p>
+        <form action="/delete-owner-profile/{{$owp->first()->id}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button>Delete</button>
+        </form>
+    </div>
+    @else
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Owner Profile</h2>
+        <p>No Owner Profile available</p>
+    </div>
+    @endif
+
+    @if(isset($faqs) && $faqs->count() > 0)
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>visi misi</h2>
+        <div style="background-color: gray; padding: 10px; margin: 10px;">
+            {{$VM->first()->visi}}
+            {{$VM->first()->misi}}
+        </div>
+        <p><a href="/edit-visi-misi/{{$VM->first()->id}}">Edit</a></p>
+        <form action="/delete-visi-misi/{{$VM->first()->id}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button>Delete</button>
+        </form>
+    </div>
+    @else
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>visi misi</h2>
+        <p>No visi misi available</p>
+    </div>
+    @endif
+
+    @if(isset($tstmns) && $tstmns->count() > 0)
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Keunggulan</h2>
+        @foreach ($bnfts as $bnft)
+        <div style="background-color: gray; padding: 10px; margin: 10px;">
+            <h3>{{$bnft['title']}}</h3>
+            {{$bnft['desc']}}
+            <img src="{{ asset('storage/' . $bnft->image) }}" alt="{{$bnft['name']}}" style="max-width: 200px;">
+        </div>
+        <p><a href="/edit-keunggulan/{{$bnft->id}}">Edit</a></p>
+        <form action="/delete-keunggulan/{{$bnft->id}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button>Delete</button>
+        </form>
+        @endforeach
+    </div>
+    @else
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Keunggulan</h2>
+        <p>No Keunggulan available</p>
+    </div>
+    @endif
+
     @else
     {{-- <div style="border: 3px solid black; margin-bottom: 10px;">
         <form action="/register" method="POST">

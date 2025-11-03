@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('link_gmaps');
             $table->string('email');
-            $table->string('url_instagram');
-            $table->string('url_facebook');
-            $table->string('url_threads');
-            $table->string('url_tiktok');
-            $table->string('url_youtube');
-            $table->string('url_twitter');
+            $table->string('url_instagram')->nullable();
+            $table->string('url_facebook')->nullable();
+            $table->string('url_threads')->nullable();
+            $table->string('url_tiktok')->nullable();
+            $table->string('url_youtube')->nullable();
+            $table->string('url_twitter')->nullable();
             $table->string('user_id');
         });
     }

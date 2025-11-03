@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('testimonies', function (Blueprint $table) {
+        Schema::create('owner_profiles', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->string('review');
-            $table->integer('star');
-            $table->foreignId('user_id');
+            $table->tinyText('name');
+            $table->string('desc');
+            $table->string('image');
+            $table->string('url_instagram');
+            $table->string('url_linkedin');
+            $table->foreignId('user_id')->constrained();
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('testimonies');
+        Schema::dropIfExists('owner_profiles');
     }
 };
