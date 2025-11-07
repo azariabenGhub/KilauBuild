@@ -32,11 +32,11 @@ class BenefitController extends Controller
     }
 
     public function showEditScreen(benefit $bnft){
-        if (auth()->id() !== $bnft['user_id']){
-            return redirect('/');
+        if (auth()->id() == $bnft['user_id']){
+            return view('edit-benefit', ['bnft' => $bnft]);
         }
         
-        return view('edit-benefit', ['bnft' => $bnft]);
+        return redirect('/');
     }
 
     public function updateBenefit(benefit $bnft, Request $request){

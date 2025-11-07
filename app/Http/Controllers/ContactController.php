@@ -41,15 +41,15 @@ class ContactController extends Controller
     }
 
     public function showEditScreen(contact $cont){
-        if (auth()->id() !== $cont['user_id']){
-            return redirect('/');
+        if (auth()->id() == $cont['user_id']){
+            return view('edit-contact', ['cont' => $cont]);
         }
         
-        return view('edit-contact', ['cont' => $cont]);
+        return redirect('/');
     }
 
     public function updateContact(contact $cont, Request $request){
-        if (auth()->user()->id == $cont['user_id']){
+        if (auth()->id() == $cont['user_id']){
             $incomingFields = $request->validate([
                 'no_telp' => 'required',
                 'alamat' => 'required',

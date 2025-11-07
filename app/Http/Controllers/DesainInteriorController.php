@@ -61,7 +61,7 @@ class DesainInteriorController extends Controller
     }
 
     public function deleteDI(desainInterior $DI){
-        if (auth()->user()->id == $DI['user_id']){
+        if (auth()->id() == $DI['user_id']){
             $DI->delete();
             Storage::disk('public')->delete($DI->image);
         }

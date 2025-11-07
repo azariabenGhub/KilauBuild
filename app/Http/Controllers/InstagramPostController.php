@@ -32,11 +32,11 @@ class InstagramPostController extends Controller
     }
 
     public function showEditScreen(InstagramPost $post){
-        if (auth()->id() !== $post['user_id']){
-            return redirect('/');
+        if (auth()->id() == $post['user_id']){
+            return view('edit-post', ['post' => $post]);
         }
         
-        return view('edit-post', ['post' => $post]);
+        return redirect('/');
     }
 
     public function updatePost(InstagramPost $post, Request $request){

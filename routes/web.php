@@ -11,6 +11,7 @@ use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\VisiMisiController;
 use App\Models\benefit;
+use App\Models\contact;
 use App\Models\desainInterior;
 use App\Models\Faq;
 use App\Models\InstagramPost;
@@ -40,6 +41,7 @@ Route::get('/dashboard', function () {
     $OPs = ongoingProjects::latest()->get();
     $DIs = desainInterior::latest()->get();
     $statis = statistic::all();
+    $cont = contact::all();
     $owp = ownerProfile::all();
     $VM = visionMission::all();
     $bnfts = benefit::all();
@@ -53,6 +55,7 @@ Route::get('/dashboard', function () {
         'OPs' => $OPs,
         'DIs' => $DIs,
         'statis' => $statis,
+        'cont' => $cont,
         'owp' => $owp,
         'VM' => $VM,
         'bnfts' => $bnfts
@@ -131,7 +134,7 @@ Route::put('/edit-visi-misi/{VM}', [VisiMisiController::class, 'updateVisiMisi']
 Route::delete('/delete-visi-misi/{VM}', [VisiMisiController::class, 'deleteVisiMisi']);
 
 // Keunggulan
-Route::post('/create-keunggulan', [BenefitController::class, 'createBenefit']);
-Route::get('/edit-keunggulan/{bnft}', [BenefitController::class, 'showEditScreen']);
-Route::put('/edit-keunggulan/{bnft}', [BenefitController::class, 'updateBenefit']);
-Route::delete('/delete-keunggulan/{bnft}', [BenefitController::class, 'deleteBenefit']);
+Route::post('/create-benefit', [BenefitController::class, 'createBenefit']);
+Route::get('/edit-benefit/{bnft}', [BenefitController::class, 'showEditScreen']);
+Route::put('/edit-benefit/{bnft}', [BenefitController::class, 'updateBenefit']);
+Route::delete('/delete-benefit/{bnft}', [BenefitController::class, 'deleteBenefit']);

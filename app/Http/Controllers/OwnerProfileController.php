@@ -36,11 +36,11 @@ class OwnerProfileController extends Controller
     }
 
     public function showEditScreen(ownerProfile $owp){
-        if (auth()->id() !== $owp['user_id']){
-            return redirect('/');
+        if (auth()->id() == $owp['user_id']){
+            return view('edit-owner-profile', ['owp' => $owp]);
         }
         
-        return view('edit-owner-profile', ['srvc' => $owp]);
+        return redirect('/');
     }
 
     public function updateOwp(ownerProfile $owp, Request $request){

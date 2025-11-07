@@ -143,7 +143,7 @@
 
     <div style="border: 3px solid black; margin-bottom: 10px;">
         <h2>Create Keunggulan</h2>
-        <form action="/create-keunggulan" method="POST" enctype="multipart/form-data">
+        <form action="/create-benefit" method="POST" enctype="multipart/form-data">
             @csrf
             <input name="title" type="text" placeholder="Judul Keunggulan...">
             <textarea name="desc" type="text" placeholder="Deskripsi..."></textarea>
@@ -157,9 +157,10 @@
         <h2>Posts</h2>
         @foreach ($posts as $post)
         <div style="background-color: gray; padding: 10px; margin: 10px;">
-            <h3>{{$post['title']}} by {{$post->searchAuthor->name}}</h3>
-            <img src="{{ asset('storage/' . $post->image) }}" alt="{{$post['title']}}" style="max-width: 200px;">
-            {{$post['instagram_url']}}
+            <a href="{{$post['instagram_url']}}">
+                <h3>{{$post['title']}} by {{$post->searchAuthor->name}}</h3>
+                <img src="{{ asset('storage/' . $post->image) }}" alt="{{$post['title']}}" style="max-width: 200px;">
+            </a>
         </div>
         <p><a href="/edit-post/{{$post->id}}">Edit</a></p>
         <form action="/delete-post/{{$post->id}}" method="POST">
@@ -343,6 +344,36 @@
     </div>
     @endif
     
+    @if(isset($cont) && $cont->count() > 0)
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Contact</h2>
+        <div style="background-color: gray; padding: 10px; margin: 10px;">
+            <h3>{{$cont->first()->name}}</h3>
+            {{$cont->first()->no_telp}}
+            {{$cont->first()->alamat}}
+            {{$cont->first()->email}}
+            {{$cont->first()->link_gmaps}}
+            {{$cont->first()->url_instagram}}
+            {{$cont->first()->url_facebook}}
+            {{$cont->first()->url_threads}}
+            {{$cont->first()->url_tiktok}}
+            {{$cont->first()->url_youtube}}
+            {{$cont->first()->url_twitter}}
+        </div>
+        <p><a href="/edit-contact/{{$cont->first()->id}}">Edit</a></p>
+        <form action="/delete-contact/{{$cont->first()->id}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button>Delete</button>
+        </form>
+    </div>
+    @else
+    <div style="border: 3px solid black; margin-bottom: 10px;">
+        <h2>Owner Profile</h2>
+        <p>No Owner Profile available</p>
+    </div>
+    @endif
+
     @if(isset($owp) && $owp->count() > 0)
     <div style="border: 3px solid black; margin-bottom: 10px;">
         <h2>Owner Profile</h2>
@@ -397,8 +428,8 @@
             {{$bnft['desc']}}
             <img src="{{ asset('storage/' . $bnft->image) }}" alt="{{$bnft['name']}}" style="max-width: 200px;">
         </div>
-        <p><a href="/edit-keunggulan/{{$bnft->id}}">Edit</a></p>
-        <form action="/delete-keunggulan/{{$bnft->id}}" method="POST">
+        <p><a href="/edit-benefit/{{$bnft->id}}">Edit</a></p>
+        <form action="/delete-benefit/{{$bnft->id}}" method="POST">
             @csrf
             @method('DELETE')
             <button>Delete</button>

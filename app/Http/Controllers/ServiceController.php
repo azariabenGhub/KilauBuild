@@ -32,11 +32,11 @@ class ServiceController extends Controller
     }
 
     public function showEditScreen(service $srvc){
-        if (auth()->id() !== $srvc['user_id']){
-            return redirect('/');
+        if (auth()->id() == $srvc['user_id']){
+            return view('edit-service', ['srvc' => $srvc]);
         }
         
-        return view('edit-service', ['srvc' => $srvc]);
+        return redirect('/');
     }
 
     public function updateService(service $srvc, Request $request){

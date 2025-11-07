@@ -34,7 +34,7 @@ class ProjectDoneController extends Controller
     }
 
     public function showEditScreen(projectDone $PD){
-        if (auth()->user()->id == $PD['user_id']){
+        if (auth()->id() == $PD['user_id']){
             return view('edit-project-done', ['PD' => $PD]);
         }
         
