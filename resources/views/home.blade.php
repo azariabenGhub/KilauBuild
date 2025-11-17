@@ -77,7 +77,6 @@
             z-index: 1000;
         }
 
-        /* Layout baru dengan dua kolom */
         .calendar-layout {
             display: flex;
             gap: 20px;
@@ -168,31 +167,7 @@
             color: #666;
             font-size: 14px;
         }
-        
-        .whatsapp-link {
-            color: #25D366;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            background-color: rgba(37, 211, 102, 0.1);
-            transition: background-color 0.2s;
-        }
-        
-        .whatsapp-link:hover {
-            background-color: rgba(37, 211, 102, 0.2);
-            text-decoration: none;
-            color: #128C7E;
-        }
-        
-        .whatsapp-icon {
-            font-size: 16px;
-        }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .calendar-header {
                 flex-direction: column;

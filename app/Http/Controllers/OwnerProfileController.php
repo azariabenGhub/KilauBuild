@@ -20,6 +20,7 @@ class OwnerProfileController extends Controller
 
             if($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('owner_profile', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
@@ -56,6 +57,7 @@ class OwnerProfileController extends Controller
             if($request->hasFile('image')) {
                 Storage::disk('public')->delete($owp->image);
                 $imagePath = $request->file('image')->store('services', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\InstagramPost;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ImageController;
 
 class InstagramPostController extends Controller
 {
@@ -18,13 +19,14 @@ class InstagramPostController extends Controller
 
             if($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('instagram_posts', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
             $incomingFields['title'] = strip_tags($incomingFields['title']);
             $incomingFields['instagram_url'] = filter_var($incomingFields['instagram_url']);
             $incomingFields['user_id'] = auth()->id();
-            $incomingFields['is_published'] = $request->has('di_homepage');
+            $incomingFields['di_homepage'] = $request->has('di_homepage');
             
             InstagramPost::create($incomingFields);
             return Redirect("/dashboard");
@@ -51,12 +53,13 @@ class InstagramPostController extends Controller
             if($request->hasFile('image')) {
                 Storage::disk('public')->delete($post->image);
                 $imagePath = $request->file('image')->store('instagram_posts', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
             $incomingFields['title'] = strip_tags($incomingFields['title']);
             $incomingFields['instagram_url'] = strip_tags($incomingFields['instagram_url']);
-            $incomingFields['is_published'] = $request->has('di_homepage');
+            $incomingFields['di_homepage'] = $request->has('di_homepage');
 
             $post->update($incomingFields);
             

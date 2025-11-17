@@ -18,6 +18,7 @@ class ServiceController extends Controller
 
             if($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('services', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
@@ -49,6 +50,7 @@ class ServiceController extends Controller
             if($request->hasFile('image')) {
                 Storage::disk('public')->delete($srvc->image);
                 $imagePath = $request->file('image')->store('services', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 

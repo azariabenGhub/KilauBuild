@@ -18,6 +18,7 @@ class BenefitController extends Controller
 
             if($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('benefits', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
@@ -49,6 +50,7 @@ class BenefitController extends Controller
             if($request->hasFile('image')) {
                 Storage::disk('public')->delete($bnft->image);
                 $imagePath = $request->file('image')->store('benefits', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 

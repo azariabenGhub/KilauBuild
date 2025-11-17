@@ -17,6 +17,7 @@ class DesainInteriorController extends Controller
 
             if($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('desain_project', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
@@ -47,6 +48,7 @@ class DesainInteriorController extends Controller
             if($request->hasFile('image')) {
                 Storage::disk('public')->delete($DI->image);
                 $imagePath = $request->file('image')->store('desain_interior', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 

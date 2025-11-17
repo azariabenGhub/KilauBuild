@@ -13,7 +13,7 @@
         <input type="text" name="instagram_url" value="{{$post->instagram_url}}"><br><br>
         <input type="file" name="image"><br><br>
         <label>
-            <input type="checkbox" name="is_published" value="1" {{ $post->is_published ? 'checked' : '' }}>
+            <input type="checkbox" name="di_homepage" value="1" {{$post->di_homepage == 1 ? 'checked' : ''}}>
             Tampilkan di Home Page
         </label><br><br>
         <button>Save Changes</button>

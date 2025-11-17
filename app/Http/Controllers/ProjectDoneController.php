@@ -19,6 +19,7 @@ class ProjectDoneController extends Controller
 
             if($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('project_done', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
@@ -53,6 +54,7 @@ class ProjectDoneController extends Controller
             if($request->hasFile('image')) {
                 Storage::disk('public')->delete($PD->image);
                 $imagePath = $request->file('image')->store('project_done', 'public');
+                ImageController::compressImage($imagePath);
                 $incomingFields['image'] = $imagePath;
             }
 
