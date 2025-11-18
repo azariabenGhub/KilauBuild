@@ -726,7 +726,7 @@
         @endif
 
     @else
-    {{-- <div style="border: 3px solid black; margin-bottom: 10px;">
+    <div style="border: 3px solid black; margin-bottom: 10px;">
         <form action="/register" method="POST">
             @csrf
             <h2>Register</h2>
@@ -734,7 +734,7 @@
             <input type="password" name="password" placeholder="password">
             <button>Register</button>
         </form>
-    </div> --}}
+    </div>
     <div style="border: 3px solid black; margin-bottom: 10px;">
         <form action="/login" method="POST">
             @csrf

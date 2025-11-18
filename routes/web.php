@@ -98,7 +98,14 @@ Route::put('/edit-statistic/{statis}', [StatisticController::class, 'updateStati
 Route::delete('/delete-statistic/{statis}', [StatisticController::class, 'deleteStatistic']);
 
 // FAQ
-Route::post('/create-faq', [FaqController::class, 'createFAQ']);
+
+// [GET] 200 be.facebook.com/api/faq
+// [GET] 200 be.facebook.com/api/faq/1
+// [POST] 201 be.facebook.com/api/faq
+// [PUT] 200 be.facebook.com/api/faq/1
+// [DELETE] 200 be.facebook.com/api/faq/1
+Route::get('/faq', [FaqController::class, 'index']);
+Route::post('/faq', [FaqController::class, 'store']);
 Route::get('/edit-faq/{faq}', [FaqController::class, 'showEditScreen']);
 Route::put('/edit-faq/{faq}', [FaqController::class, 'updateFAQ']);
 Route::delete('/delete-faq/{faq}', [FaqController::class, 'deleteFAQ']);

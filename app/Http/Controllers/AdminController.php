@@ -36,9 +36,10 @@ class AdminController extends Controller
         ]);
 
     $IncomingFields['password'] = bcrypt($IncomingFields['password']);
-    $admin = User::create($IncomingFields);
-    auth()->guard()->login($admin);
-    return redirect('/');
+    $IncomingFields['email'] = 'kilaubuild@gmail.com';
+    // $admin = User::create($IncomingFields);
+    // auth()->guard()->login($admin);
+    return response()->json(['status' => 'success']);
     }
 
 
