@@ -17,7 +17,7 @@ class ProjectDoneController extends Controller
         ]);
     }
     
-    public function createPD(Request $request){
+    public function store(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -36,22 +36,16 @@ class ProjectDoneController extends Controller
             $incomingFields['desc'] = strip_tags($incomingFields['desc']);
             $incomingFields['year'] = strip_tags($incomingFields['year']);
             $incomingFields['user_id'] = auth()->id();
-            projectDone::create($incomingFields);
-            return Redirect("/dashboard");
+            $PD = projectDone::create($incomingFields);
+            return response()->json([
+                'success' => true,
+                'message' => 'Project Done berhasil dibuat',
+                'data' => $PD
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function showEditScreen(projectDone $PD){
-        if (auth()->id() == $PD['user_id']){
-            return view('edit-project-done', ['PD' => $PD]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updatePD(projectDone $PD, Request $request){
+    public function update(projectDone $PD, Request $request){
         if (auth()->id() == $PD['user_id']){
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -73,18 +67,24 @@ class ProjectDoneController extends Controller
 
             $PD->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'Project Done berhasil diperbarui',
+                'data' => $PD
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deletePD(projectDone $PD){
+    public function destroy(projectDone $PD){
         if (auth()->id() == $PD['user_id']){
             $$PD->delete();
             Storage::disk('public')->delete($PD->image);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Project Done berhasil dihapus',
+                'data' => $PD
+            ]);
         }
-        
-        return redirect('/dashboard');
     }
 }

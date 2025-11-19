@@ -18,7 +18,7 @@ class InstagramPostController extends Controller
         ]);
     }
     
-    public function createPost(Request $request){
+    public function store(Request $request){
         if (auth()->check()){       
             $incomingFields = $request->validate([
                 'title' => 'required',
@@ -35,24 +35,17 @@ class InstagramPostController extends Controller
             $incomingFields['title'] = strip_tags($incomingFields['title']);
             $incomingFields['instagram_url'] = filter_var($incomingFields['instagram_url']);
             $incomingFields['user_id'] = auth()->id();
-            $incomingFields['di_homepage'] = $request->has('di_homepage');
             
-            InstagramPost::create($incomingFields);
-            return Redirect("/dashboard");
+            $post = InstagramPost::create($incomingFields);
+            return response()->json([
+                'success' => true,
+                'message' => 'Post berhasil dibuat',
+                'data' => $post
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function showEditScreen(InstagramPost $post){
-        if (auth()->id() == $post['user_id']){
-            return view('edit-post', ['post' => $post]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updatePost(InstagramPost $post, Request $request){
+    public function update(InstagramPost $post, Request $request){
         if (auth()->id() == $post['user_id']){
             $incomingFields = $request->validate([
                 'title' => 'required',
@@ -72,28 +65,24 @@ class InstagramPostController extends Controller
 
             $post->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'Post berhasil diperbarui',
+                'data' => $post
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deletePost(InstagramPost $post){
+    public function destroy(InstagramPost $post){
         if (auth()->id() == $post['user_id']){
             $post->delete();
             Storage::disk('public')->delete($post->image);
-        }
         
-        return redirect('/dashboard');
-    }
-
-    public function viewToHome(InstagramPost $post){
-        if (auth()->id() == $post['user_id']){
-            $post->update([
-                'di_homepage' => !$post->di_homepage
+            return response()->json([
+                'success' => true,
+                'message' => 'Post berhasil dihapus',
+                'data' => $post
             ]);
         }
-        
-        return redirect('/dashboard');
     }
 }

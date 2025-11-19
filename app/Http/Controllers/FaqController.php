@@ -16,7 +16,7 @@ class FaqController extends Controller
         ]);
     }
     
-    public function createFAQ(Request $request){
+    public function store(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
                 'question' => 'required',
@@ -26,22 +26,16 @@ class FaqController extends Controller
             $incomingFields['question'] = strip_tags($incomingFields['question']);
             $incomingFields['answer'] = filter_var($incomingFields['answer']);
             $incomingFields['user_id'] = auth()->id();
-            Faq::create($incomingFields);
-            return Redirect("/dashboard");
+            $faq = Faq::create($incomingFields);
+            return response()->json([
+                'success' => true,
+                'message' => 'FAQ berhasil dibuat',
+                'data' => $faq
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function showEditScreen(Faq $faq){
-        if (auth()->id() == $faq['user_id']){
-            return view('edit-faq', ['faq' => $faq]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updateFAQ(Faq $faq, Request $request){
+    public function update(Faq $faq, Request $request){
         if (auth()->id() == $faq['user_id']){
             $incomingFields = $request->validate([
                 'question' => 'required',
@@ -53,20 +47,24 @@ class FaqController extends Controller
 
             $faq->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'FAQ berhasil diperbaruit',
+                'data' => $faq
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deleteFAQ(Faq $faq){
+    public function destroy(Faq $faq){
        if (auth()->id() == $faq['user_id']){
             $faq->delete();
 
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'FAQ berhasil dihapus',
+                'data' => $faq
+            ]);
         }
-        
-        return redirect('/');
     }
 
     

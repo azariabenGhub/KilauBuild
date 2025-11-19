@@ -16,7 +16,7 @@ class StatisticController extends Controller
         ]);
     }
     
-    public function createStatistic(Request $request){
+    public function store(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
                 'tahun_pengalaman' => 'required',
@@ -30,22 +30,16 @@ class StatisticController extends Controller
             $incomingFields['klien_puas'] = strip_tags($incomingFields['klien_puas']);
             $incomingFields['sebaran_kota'] = strip_tags($incomingFields['sebaran_kota']);
             $incomingFields['user_id'] = auth()->id();
-            statistic::create($incomingFields);
-            return Redirect("/dashboard");
-        }
-        
-        return redirect('/');  
+            $statis =  statistic::create($incomingFields);
+            return response()->json([
+                'success' => true,
+                'message' => "Statistik berhasil dibuat",
+                'data' => $statis
+            ]);
+        } 
     }
 
-    public function showEditScreen(statistic $statis){
-        if (auth()->id() == $statis['user_id']){
-            return view('edit-statistic', ['statis' => $statis]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updateStatistic(statistic $statis, Request $request){
+    public function update(statistic $statis, Request $request){
         if (auth()->id() == $statis['user_id']){
             $incomingFields = $request->validate([
                 'tahun_pengalaman' => 'required',
@@ -62,19 +56,23 @@ class StatisticController extends Controller
 
             $statis->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => "Statistik berhasil diperbarui",
+                'data' => $statis
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deleteStatistic(statistic $statis){
+    public function destroy(statistic $statis){
         if (auth()->id() == $statis['user_id']){
             $statis->delete();
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => "Statistik berhasil dihapus",
+                'data' => $statis
+            ]);
         }
-        
-        return redirect('/');
     }
 }

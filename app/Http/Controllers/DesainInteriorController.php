@@ -17,7 +17,7 @@ class DesainInteriorController extends Controller
         ]);
     }
     
-    public function createDI(Request $request){
+    public function store(Request $request){
         if (auth()->check()){       
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -32,22 +32,16 @@ class DesainInteriorController extends Controller
 
             $incomingFields['name'] = strip_tags($incomingFields['name']);
             $incomingFields['user_id'] = auth()->id();
-            desainInterior::create($incomingFields);
-            return Redirect("/dashboard");
+            $DI = desainInterior::create($incomingFields);
+            return response()->json([
+                'success' => true,
+                'message' => 'Desain Interior berhasil dibuat',
+                'data' => $DI
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function showEditScreen(desainInterior $DI){
-        if (auth()->id() == $DI['user_id']){
-            return view('edit-desain-interior', ['OP' => $DI]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updateOP(desainInterior $DI, Request $request){
+    public function update(desainInterior $DI, Request $request){
         if (auth()->id() == $DI['user_id']){
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -65,18 +59,24 @@ class DesainInteriorController extends Controller
 
             $DI->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'Desain Interior berhasil diperbarui',
+                'data' => $DI
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deleteDI(desainInterior $DI){
+    public function destroy(desainInterior $DI){
         if (auth()->id() == $DI['user_id']){
             $DI->delete();
             Storage::disk('public')->delete($DI->image);
-        }
         
-        return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'Desain Interior berhasil dihapus',
+                'data' => $DI
+            ]);
+        }
     }
 }

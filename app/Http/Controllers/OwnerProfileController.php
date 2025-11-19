@@ -17,7 +17,7 @@ class OwnerProfileController extends Controller
         ]);
     }
 
-    public function createOwp(Request $request){
+    public function store(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -38,22 +38,17 @@ class OwnerProfileController extends Controller
             $incomingFields['desc'] = filter_var($incomingFields['url_instagram']);
             $incomingFields['url_instagram'] = filter_var($incomingFields['url_linkedin']);
             $incomingFields['user_id'] = auth()->id();
-            ownerProfile::create($incomingFields);
-            return Redirect("/dashboard");
+            $owp = ownerProfile::create($incomingFields);
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Ongoing Project berhasil diperbarui",
+                'data' => $owp
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function showEditScreen(ownerProfile $owp){
-        if (auth()->id() == $owp['user_id']){
-            return view('edit-owner-profile', ['owp' => $owp]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updateOwp(ownerProfile $owp, Request $request){
+    public function update(ownerProfile $owp, Request $request){
         if (auth()->id() == $owp['user_id']){
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -77,18 +72,24 @@ class OwnerProfileController extends Controller
 
             $owp->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => "Ongoing Project berhasil diperbarui",
+                'data' => $owp
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deleteOwp(ownerProfile $owp){
+    public function destroy(ownerProfile $owp){
         if (auth()->id() == $owp['user_id']){
             $owp->delete();
             Storage::disk('public')->delete($owp->image);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Ongoing Project berhasil diperbarui",
+                'data' => $owp
+            ]);
         }
-        
-        return redirect('/dashboard');
     }
 }

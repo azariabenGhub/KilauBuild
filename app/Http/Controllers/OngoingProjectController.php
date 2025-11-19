@@ -17,7 +17,7 @@ class OngoingProjectController extends Controller
         ]);
     }
     
-    public function createOP(Request $request){
+    public function store(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -36,22 +36,15 @@ class OngoingProjectController extends Controller
             $incomingFields['loc'] = strip_tags($incomingFields['loc']);
             $incomingFields['persen'] = strip_tags($incomingFields['persen']);
             $incomingFields['user_id'] = auth()->id();
-            ongoingProjects::create($incomingFields);
-            return Redirect("/dashboard");
+            $OP = ongoingProjects::create($incomingFields);
+            return response()->json([
+                'success' => true,
+                'data' => $OP
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function showEditScreen(ongoingProjects $OP){
-        if (auth()->id() == $OP['user_id']){
-            return view('edit-ongoing-project', ['OP' => $OP]);
-        }
-        
-        return redirect('/');
-    }
-
-    public function updateOP(ongoingProjects $OP, Request $request){
+    public function update(ongoingProjects $OP, Request $request){
         if (auth()->id() == $OP['user_id']){
             $incomingFields = $request->validate([
                 'name' => 'required',
@@ -73,18 +66,24 @@ class OngoingProjectController extends Controller
 
             $OP->update($incomingFields);
             
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => "Ongoing Project berhasil diperbarui",
+                'data' => $OP
+            ]);
         }
-        
-        return redirect('/');
     }
 
-    public function deleteOP(ongoingProjects $OP){
+    public function destroy(ongoingProjects $OP){
         if (auth()->id() == $OP['user_id']){
             $OP->delete();
             Storage::disk('public')->delete($OP->image);
-        }
         
-        return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => "Ongoing Project berhasil dihapus",
+                'data' => $OP
+            ]);
+        }
     }
 }
