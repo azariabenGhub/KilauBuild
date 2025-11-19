@@ -17,7 +17,10 @@ class AdminController extends Controller
             $request->session()->regenerate();
         }
 
-        return redirect('/dashboard');
+        return response()->json([
+            'success' => true,
+            'data' => auth()->user()
+        ]);
     }
 
     public function redirectDashboard(){

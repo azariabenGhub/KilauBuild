@@ -11,7 +11,10 @@ class BenefitController extends Controller
     public function index(){
         $bnfts = benefit::all();
 
-        return view('dashboard', ['bnfts' => $bnfts]);
+        return response()->json([
+            'success' => true,
+            'data' => $bnfts
+        ]);
     }
     
     public function createBenefit(Request $request){
