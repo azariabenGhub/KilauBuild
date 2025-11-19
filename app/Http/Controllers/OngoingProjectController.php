@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class OngoingProjectController extends Controller
 {
+    public function index(){
+        $OPs = ongoingProjects::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $OPs
+        ]);
+    }
+    
     public function createOP(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

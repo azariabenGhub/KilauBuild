@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class VisiMisiController extends Controller
 {
+    public function index(){
+        $VM = visionMission::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $VM
+        ]);
+    }
+    
     public function createVisiMisi(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function index(){
+        $cont = contact::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $cont
+        ]);
+    }
+
     public function createContact(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

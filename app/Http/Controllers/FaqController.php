@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
+    public function index(){
+        $faqs = Faq::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $faqs
+        ]);
+    }
+    
     public function createFAQ(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

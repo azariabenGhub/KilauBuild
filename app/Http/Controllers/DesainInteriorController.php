@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class DesainInteriorController extends Controller
 {
+    public function index(){
+        $DIs = desainInterior::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $DIs
+        ]);
+    }
+    
     public function createDI(Request $request){
         if (auth()->check()){       
             $incomingFields = $request->validate([

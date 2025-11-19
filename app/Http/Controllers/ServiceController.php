@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
+    public function index(){
+        $srvcs = service::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $srvcs
+        ]);
+    }
+    
     public function createService(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

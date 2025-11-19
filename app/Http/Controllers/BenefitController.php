@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class BenefitController extends Controller
 {
+    public function index(){
+        $bnfts = benefit::all();
+
+        return view('dashboard', ['bnfts' => $bnfts]);
+    }
+    
     public function createBenefit(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

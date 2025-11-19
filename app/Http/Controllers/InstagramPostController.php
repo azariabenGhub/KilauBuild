@@ -9,6 +9,15 @@ use App\Http\Controllers\ImageController;
 
 class InstagramPostController extends Controller
 {
+    public function index(){
+        $posts = InstagramPost::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $posts
+        ]);
+    }
+    
     public function createPost(Request $request){
         if (auth()->check()){       
             $incomingFields = $request->validate([

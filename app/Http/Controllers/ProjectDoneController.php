@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectDoneController extends Controller
 {
+    public function index(){
+        $PDs = projectDone::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $PDs
+        ]);
+    }
+    
     public function createPD(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

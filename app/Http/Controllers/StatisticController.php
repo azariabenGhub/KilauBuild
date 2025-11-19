@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class StatisticController extends Controller
 {
+    public function index(){
+        $statis = statistic::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $statis
+        ]);
+    }
+    
     public function createStatistic(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

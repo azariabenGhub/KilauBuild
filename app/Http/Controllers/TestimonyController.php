@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class TestimonyController extends Controller
 {
+    public function index(){
+        $tstmns = testimony::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $tstmns
+        ]);
+    }
+    
     public function createTstmn(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([

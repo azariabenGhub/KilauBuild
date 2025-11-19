@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class OwnerProfileController extends Controller
 {
+    public function index(){
+        $owp = ownerProfile::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $owp
+        ]);
+    }
+
     public function createOwp(Request $request){
         if (auth()->check()){   
             $incomingFields = $request->validate([
